@@ -10,19 +10,31 @@ public class GPIOPin
 {
   private final int pin;
   private final File base_path; 
+  private final File value_file;
 
   public GPIOPin(int pin)
   {
     this.pin = pin;
     base_path = new File("/sys/class/gpio/gpio" + pin);
+    value_file = new File(base_path, "value");
     open();
   }
+  public int getPin(){return pin;}
 
   private void open()
   {
     if (base_path.exists()) return;
     write(new File("/sys/class/gpio/export"),"" + pin);
-  }
+    try
+    {
+      Thread.sleep(500);
+    }
+    catch(Throwable t)
+    {
+      
+      throw new RuntimeException(t);
+    }
+  } 
 
   public void setDirectionOut()
   {
@@ -52,12 +64,10 @@ public class GPIOPin
 
   public void setHigh()
   {
-    File value_file = new File(base_path, "value");
     write(value_file, "1");
   }
   public void setLow()
   {
-    File value_file = new File(base_path, "value");
     write(value_file, "0");
   }
 
@@ -69,8 +79,6 @@ public class GPIOPin
   {
     try
     {
-      File value_file = new File(base_path, "value");
-
       FileInputStream in = new FileInputStream(value_file);
       byte[] b = new byte[64];
       in.read(b);

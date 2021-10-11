@@ -1,1 +1,6 @@
-.swp
+*.swp
+bazel-bin
+bazel-gatecontrol.git
+bazel-gatecontrol.git
+bazel-out
+bazel-testlogs
