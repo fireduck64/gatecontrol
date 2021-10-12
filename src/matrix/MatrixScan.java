@@ -60,7 +60,7 @@ public class MatrixScan
   public String scan()
   {
     String f = null;
-    Random rnd = new Random();
+    //Random rnd = new Random();
     for(int c_idx = 0; c_idx<cols.size(); c_idx++)
     {
       GPIOPin c = cols.get(c_idx);
@@ -68,7 +68,8 @@ public class MatrixScan
       int r_idx=0;
       for(GPIOPin r : rows)
       {
-        if ((r.getValue()) || (rnd.nextDouble() < 0.001))
+        //if ((r.getValue()) || (rnd.nextDouble() < 0.001))
+        if (r.getValue())
         {
           f=c_idx +"," + r_idx;
         }
