@@ -34,14 +34,14 @@ public class MatrixScan
     keymap.put("1,3", "0");
     keymap.put("2,3", "#");
     
-    cols.add(GPIO.openPin(17)); // C1
-    cols.add(GPIO.openPin(27)); // C2
-    cols.add(GPIO.openPin(25)); // C3
+    cols.add(GPIO.openPin(22)); // C1
+    cols.add(GPIO.openPin(17)); // C2
+    cols.add(GPIO.openPin(23)); // C3
 
-    rows.add(GPIO.openPin(22)); // r1
+    rows.add(GPIO.openPin(27)); // r1
     rows.add(GPIO.openPin(16)); // r2
     rows.add(GPIO.openPin(24)); // r3
-    rows.add(GPIO.openPin(23)); // r4
+    rows.add(GPIO.openPin(25)); // r4 *
 
     for(GPIOPin pin : cols)
     {
