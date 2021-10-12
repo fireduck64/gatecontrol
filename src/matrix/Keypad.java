@@ -6,6 +6,7 @@ import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import duckutil.PeriodicThread;
 
+import duckutil.gatecontrol.SoundPlayer;
 
 /**
  * Reads values from the matrix scan and when they change, calls
@@ -55,6 +56,7 @@ public class Keypad extends PeriodicThread
       {
         print_out.print(read);
         print_out.flush();
+        SoundPlayer.playButtonPress();
         last_read=read;
       }
     }

@@ -73,6 +73,7 @@ public class AccessCode extends PeriodicThread
         if (entered_string.endsWith(code))
         {
           relay_control.connectRelay("access_code_" + code, 5000L);
+          SoundPlayer.playSuccess();
         }
       }
     }

@@ -11,7 +11,7 @@ public class GateControl
 {
   public static void main(String args[]) throws Exception
   {
-
+    SoundPlayer.playSuccess();
     new GateControl(new ConfigFile(args[0]));
 
   }
