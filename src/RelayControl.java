@@ -42,7 +42,7 @@ public class RelayControl extends PeriodicThread
    */
   public void connectRelay(String identifier, long ms)
   {
-    System.out.println("Connect relay: " + identifier);
+    System.out.println("Connect relay: " + identifier + " for " + ms);
     long expire = System.currentTimeMillis() + ms;
     synchronized(holds)
     {
@@ -50,6 +50,26 @@ public class RelayControl extends PeriodicThread
     }
     wake();
 
+  }
+  public Map<String,Long> getHolds()
+  {
+    TreeMap<String, Long> hold_copy=new TreeMap<>();
+
+    synchronized(holds)
+    {
+      hold_copy.putAll(holds);
+    }
+
+    return hold_copy;
+  }
+
+  public void close()
+  {
+    synchronized(holds)
+    {
+      holds.clear();
+    }
+    wake();
   }
 
   public void runPass()

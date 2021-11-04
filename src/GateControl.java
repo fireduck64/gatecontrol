@@ -20,8 +20,10 @@ public class GateControl
   private final Keypad keypad;
   private final AccessCode access_code;
   private final SoundPlayer sound_player;
+  private final RpcServer rpc_server;
 
   public GateControl(Config config)
+    throws Exception
   {
     this.config = config;
 
@@ -41,5 +43,12 @@ public class GateControl
 
     sound_player.playSuccess();
 
+    rpc_server = new RpcServer(config, relay_control);
+
+    System.out.println("Gate Control Started");
+
+
   }
+
+
 }
