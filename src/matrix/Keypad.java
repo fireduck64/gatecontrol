@@ -18,12 +18,14 @@ public class Keypad extends PeriodicThread
   private PipedInputStream key_stream;
   private PipedOutputStream key_out;
   private PrintStream print_out;
+  private final SoundPlayer sound_player;
 
   private String last_read;
 
-  public Keypad()
+  public Keypad(SoundPlayer sound_player)
   {
-    super(10);
+    super(20);
+    this.sound_player = sound_player;
     matrix = new MatrixScan();
 
     try
@@ -54,9 +56,9 @@ public class Keypad extends PeriodicThread
     {
       if (!read.equals(last_read))
       {
+        sound_player.playButtonPress();
         print_out.print(read);
         print_out.flush();
-        SoundPlayer.playButtonPress();
         last_read=read;
       }
     }

@@ -16,16 +16,18 @@ public class AccessCode extends PeriodicThread
   private final Keypad keypad;
   private final RelayControl relay_control;
   private final TreeSet<String> access_code_set;
+  private final SoundPlayer sound_player;
 
   private TreeMap<Long, String> recent_presses;
 
   private final long max_press_age_ns = 30L*1000L*1000L*1000L;
 
-  public AccessCode(Keypad keypad, RelayControl relay_control, Collection<String> access_code_list)
+  public AccessCode(Keypad keypad, RelayControl relay_control, Collection<String> access_code_list, SoundPlayer sound_player)
   {
     super(1);
     this.keypad = keypad;
     this.relay_control = relay_control;
+    this.sound_player = sound_player;
 
     this.access_code_set = new TreeSet<>();
     access_code_set.addAll(access_code_list);
@@ -73,7 +75,7 @@ public class AccessCode extends PeriodicThread
         if (entered_string.endsWith(code))
         {
           relay_control.connectRelay("access_code_" + code, 5000L);
-          SoundPlayer.playSuccess();
+          sound_player.playSuccess();
         }
       }
     }

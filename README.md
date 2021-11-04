@@ -25,3 +25,19 @@ We just want a relay because we have no idea what ground is what.
 So this software is for that situation.  It reads from a matrix keypad attached to a raspberry pi and activates a relay
 when the correct code is input.
 
+The software is also written with adding other modules that can open the gate as well, like bluetooth proximity.
+
+## Notes
+
+If you get weird button presses, check the wiring.
+If the sound is coming from the wrong device, you can screw with alsa and fail (like me) or remove the offending
+driver for the offending sound device so only the one you want loads (ha).
+
+On a Pi 4, this disabled the onboard audio so my USB speaker worked:
+
+
+    $ cat /etc/modprobe.d/blacklist-bcm.conf
+    blacklist snd_bcm2835
+
+
+
