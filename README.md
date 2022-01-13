@@ -39,5 +39,28 @@ On a Pi 4, this disabled the onboard audio so my USB speaker worked:
     $ cat /etc/modprobe.d/blacklist-bcm.conf
     blacklist snd_bcm2835
 
+For bluetooth support, add the user you run this as so the group "bluetooth".
+
+To check, run bluetoothctl and then issue command "scan on"
+You should see a streaming pile of crap.
+
+## Bluetooth
+
+To enable, run as root because reasons.  The list should be the MAC addresses of the allowed bluetooth beacons.
+
+    bluetooth_enabled=true
+    bluetooth_list=AA:BB:CC:DD:EE:FF
+
+### Security
+
+This isn't doing any sort of cryptographic handshake.  It simply listens for addresses of beacons, which can be 
+easily observed by an attacker and cloned.
+
+### Privacy
+
+In order to work, you get a simple bluetooth beacon and do something like keep it on your person or in your car.
+The beacon will be constantly squaking its code, which someone can observe and then track you (assuming they have
+a network of listening stations near where you go).
+
 
 

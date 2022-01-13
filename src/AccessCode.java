@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.TreeSet;
 import java.util.TreeMap;
 import java.io.InputStream;
+import java.util.logging.Logger;
+
 
 /**
  * Uses a set of access codes to allow the gate to open.
@@ -21,6 +23,7 @@ public class AccessCode extends PeriodicThread
   private TreeMap<Long, String> recent_presses;
 
   private final long max_press_age_ns = 30L*1000L*1000L*1000L;
+  private static final Logger logger = Logger.getLogger("duck.gate.code");
 
   public AccessCode(Keypad keypad, RelayControl relay_control, Collection<String> access_code_list, SoundPlayer sound_player)
   {
@@ -52,7 +55,7 @@ public class AccessCode extends PeriodicThread
     }
     else
     {
-      System.out.println("No input on keypad read");
+      logger.warning("No input on keypad read");
     }
 
     long old = System.nanoTime() - max_press_age_ns;
@@ -69,7 +72,7 @@ public class AccessCode extends PeriodicThread
         sb.append(s);
       }
       String entered_string = sb.toString();
-      System.out.println("Entered string: " + entered_string);
+      logger.info("Entered string: " + entered_string);
       for(String code : access_code_set)
       {
         if (entered_string.endsWith(code))

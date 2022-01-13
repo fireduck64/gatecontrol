@@ -39,16 +39,22 @@ public class RelayControl extends PeriodicThread
    * If a caller wants to keep the relay open they either need
    * to either set a long time or call this again to reset the hold
    * open time.
+   * @returns true if the relay wasn't already connected for this identifier
    */
-  public void connectRelay(String identifier, long ms)
+  public boolean connectRelay(String identifier, long ms)
   {
     System.out.println("Connect relay: " + identifier + " for " + ms);
     long expire = System.currentTimeMillis() + ms;
+    boolean existing = false;
     synchronized(holds)
     {
+      if (holds.containsKey(identifier)) existing=true;
+
       holds.put(identifier, expire);
     }
     wake();
+
+    return !existing;
 
   }
   public Map<String,Long> getHolds()

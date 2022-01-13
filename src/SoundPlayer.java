@@ -37,7 +37,7 @@ public class SoundPlayer extends PeriodicThread
 
   public void playButtonPress()
   {
-    queue.offer("LTTP_Magic.wav");
+    queue.offer("sounds/LTTP_Magic.wav");
     wake();
   }
 
@@ -64,7 +64,7 @@ public class SoundPlayer extends PeriodicThread
 
   public void playSuccess()
   {
-    queue.offer("LTTP_Secret.wav");
+    queue.offer("sounds/LTTP_Secret.wav");
     wake();
   }
 

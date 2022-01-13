@@ -4,6 +4,7 @@ import duckutil.gatecontrol.gpio.GPIO;
 import duckutil.gatecontrol.gpio.GPIOPin;
 import duckutil.gatecontrol.matrix.MatrixScan;
 import duckutil.gatecontrol.matrix.Keypad;
+import duckutil.gatecontrol.blue.BluetoothScanner;
 import duckutil.Config;
 import duckutil.ConfigFile;
 
@@ -21,6 +22,7 @@ public class GateControl
   private final AccessCode access_code;
   private final SoundPlayer sound_player;
   private final RpcServer rpc_server;
+  private final BluetoothScanner blue_scanner;
 
   public GateControl(Config config)
     throws Exception
@@ -31,7 +33,10 @@ public class GateControl
     config.require("access_code_list");
 
     sound_player = new SoundPlayer();
-    sound_player.start();
+    if (config.getBoolean("sound_enabled"))
+    {
+      sound_player.start();
+    }
     relay_control = new RelayControl( config.getInt("relay_gpio_pin"));
     relay_control.start();
 
@@ -40,6 +45,8 @@ public class GateControl
 
     access_code = new AccessCode(keypad, relay_control, config.getList("access_code_list"), sound_player);
     access_code.start();
+
+    blue_scanner = new BluetoothScanner(config, relay_control, sound_player);
 
     sound_player.playSuccess();
 
