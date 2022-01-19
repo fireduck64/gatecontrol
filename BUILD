@@ -20,4 +20,13 @@ java_binary(
   ],
 )
 
+java_binary(
+  name = "GateCli",
+  main_class = "duckutil.gatecontrol.GateCli",
+  runtime_deps = [
+    ":gatelib",
+  ],
+)
+
+
 
