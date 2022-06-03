@@ -25,6 +25,8 @@ public class AccessCode extends PeriodicThread
   private final long max_press_age_ns = 30L*1000L*1000L*1000L;
   private static final Logger logger = Logger.getLogger("duck.gate.code");
 
+  private String last_code;
+
   public AccessCode(Keypad keypad, RelayControl relay_control, Collection<String> access_code_list, SoundPlayer sound_player)
   {
     super(1);
@@ -36,8 +38,6 @@ public class AccessCode extends PeriodicThread
     access_code_set.addAll(access_code_list);
 
     recent_presses = new TreeMap<>();
-
-
   }
 
 
@@ -77,10 +77,47 @@ public class AccessCode extends PeriodicThread
       {
         if (entered_string.endsWith(code))
         {
+          last_code = code;
           relay_control.connectRelay("access_code_" + code, 5000L);
           sound_player.playSuccess();
         }
       }
+      if (entered_string.endsWith("#"))
+      {
+        int val = numberSplice(entered_string);
+        if (val > 0)
+        if (last_code != null)
+        if (relay_control.isHoldOpen("access_code_" + last_code))
+        {
+          relay_control.connectRelay("access_code_" + last_code, 60000L * val);
+
+        }
+
+      }
+    }
+
+  }
+
+  // Expects string to be XXX#YYY# and if so
+  // exacts YYY as an integer.  Otherwise returns -1
+  public static int numberSplice(String input)
+  {
+    if (!input.endsWith("#")) return -1;
+    if (input.length() <= 2) return -1;
+    int idx = input.length()-2; // Point to value before end '#'
+    while((idx >= 0) && (input.charAt(idx) != '#'))
+    {
+      idx--;
+    }
+    String sub = input.substring(idx+1, input.length()-1);
+
+    try
+    {
+      return Integer.parseInt(sub);
+    }
+    catch(NumberFormatException e)
+    {
+      return -1;
     }
 
   }

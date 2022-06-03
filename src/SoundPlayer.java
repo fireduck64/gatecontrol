@@ -31,10 +31,6 @@ public class SoundPlayer extends PeriodicThread
     }
   }
 
-
-
-
-
   public void playButtonPress()
   {
     queue.offer("sounds/LTTP_Magic.wav");
@@ -68,6 +64,11 @@ public class SoundPlayer extends PeriodicThread
     wake();
   }
 
+  public void playItem()
+  {
+    queue.offer("sounds/LTTP_ItemFanfare.wav");
+    wake();
+  }
 
 
 }

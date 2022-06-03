@@ -68,6 +68,13 @@ public class RelayControl extends PeriodicThread
 
     return hold_copy;
   }
+  public boolean isHoldOpen(String id)
+  {
+    synchronized(holds)
+    {
+      return holds.containsKey(id);
+    }
+  }
 
   public void close()
   {

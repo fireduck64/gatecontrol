@@ -28,5 +28,15 @@ java_binary(
   ],
 )
 
+java_test(
+  name = "testnumbersplice",
+  srcs = ["test/TestNumberSplice.java"],
+  test_class = "TestNumberSplice",
+  size = "medium",
+  deps = [
+    ":gatelib",
+    "@maven//:junit_junit",
+  ],
+)
 
 
