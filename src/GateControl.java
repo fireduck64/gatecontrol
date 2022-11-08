@@ -23,6 +23,7 @@ public class GateControl
   private final SoundPlayer sound_player;
   private final RpcServer rpc_server;
   private final BluetoothScanner blue_scanner;
+  private final Notification note;
 
   public GateControl(Config config)
     throws Exception
@@ -37,18 +38,22 @@ public class GateControl
     {
       sound_player.start();
     }
+    note = new Notification(config);
+    note.start();
+
     relay_control = new RelayControl( config.getInt("relay_gpio_pin"));
     relay_control.start();
 
     keypad = new Keypad(sound_player);
     keypad.start();
 
-    access_code = new AccessCode(keypad, relay_control, config.getList("access_code_list"), sound_player);
+    access_code = new AccessCode(keypad, relay_control, config.getList("access_code_list"), sound_player, note);
     access_code.start();
 
-    blue_scanner = new BluetoothScanner(config, relay_control, sound_player);
+    blue_scanner = new BluetoothScanner(config, relay_control, sound_player, note);
 
     sound_player.playSuccess();
+    note.sendNotification("startup");
 
     rpc_server = new RpcServer(config, relay_control);
 

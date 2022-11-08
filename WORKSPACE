@@ -23,6 +23,7 @@ maven_install(
     artifacts = [
         "junit:junit:4.12",
         "com.thetransactioncompany:jsonrpc2-server:1.11",
+        "com.amazonaws:aws-java-sdk:1.12.336"
     ],
     repositories = [
         "https://repo1.maven.org/maven2",

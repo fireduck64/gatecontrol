@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.TreeSet;
 import duckutil.gatecontrol.RelayControl;
 import duckutil.gatecontrol.SoundPlayer;
+import duckutil.gatecontrol.Notification;;
 import java.util.logging.Logger;
 
 public class BluetoothScanner extends PeriodicThread
@@ -18,14 +19,16 @@ public class BluetoothScanner extends PeriodicThread
   private TreeSet<String> accept_ids;
   private final RelayControl relay_control;
   private final SoundPlayer sound_player;
+  private final Notification note;
   private static final Logger logger = Logger.getLogger("duck.gate.blue");
 
-  public BluetoothScanner(Config config, RelayControl relay_control, SoundPlayer sound_player)
+  public BluetoothScanner(Config config, RelayControl relay_control, SoundPlayer sound_player, Notification note)
   {
     super(60000);
 
     this.relay_control = relay_control;
     this.sound_player = sound_player;
+    this.note = note;
 
     if (!config.getBoolean("bluetooth_enabled"))
     {
@@ -83,6 +86,7 @@ public class BluetoothScanner extends PeriodicThread
       if (relay_control.connectRelay("blue_" + id, 40000L))
       {
         sound_player.playSuccess();
+        note.sendNotification("open blue " + id);
       }
 
     }

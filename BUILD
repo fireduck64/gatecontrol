@@ -9,6 +9,8 @@ java_library(
     "@maven//:net_minidev_json_smart",
     "@maven//:com_thetransactioncompany_jsonrpc2_server",
     "@maven//:com_thetransactioncompany_jsonrpc2_base",
+    "@maven//:com_amazonaws_aws_java_sdk_sns",
+    "@maven//:com_amazonaws_aws_java_sdk_core",
   ],
 )
 
