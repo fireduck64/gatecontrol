@@ -78,19 +78,20 @@ public class AccessCode extends PeriodicThread
         if (entered_string.endsWith(code))
         {
           last_code = code;
-          relay_control.connectRelay("access_code_" + code, 5000L);
+          relay_control.connectRelay("access_code_" + code, 60000L * 5L);
           sound_player.playSuccess();
         }
       }
       if (entered_string.endsWith("#"))
       {
         int val = numberSplice(entered_string);
+        val = Math.min(val, 1440); // 1 day
         if (val > 0)
         if (last_code != null)
         if (relay_control.isHoldOpen("access_code_" + last_code))
         {
           relay_control.connectRelay("access_code_" + last_code, 60000L * val);
-
+          sound_player.playItem();
         }
 
       }
@@ -105,10 +106,11 @@ public class AccessCode extends PeriodicThread
     if (!input.endsWith("#")) return -1;
     if (input.length() <= 2) return -1;
     int idx = input.length()-2; // Point to value before end '#'
-    while((idx >= 0) && (input.charAt(idx) != '#'))
+    while((idx > 0) && (input.charAt(idx) != '#'))
     {
       idx--;
     }
+    if (input.charAt(idx) != '#') return -1;
     String sub = input.substring(idx+1, input.length()-1);
 
     try

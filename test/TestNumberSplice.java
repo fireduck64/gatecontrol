@@ -22,6 +22,7 @@ public class TestNumberSplice
   {
     Assert.assertEquals(-1, AccessCode.numberSplice(""));
     Assert.assertEquals(-1, AccessCode.numberSplice("1111"));
+    Assert.assertEquals(-1, AccessCode.numberSplice("1111#"));
     Assert.assertEquals(-1, AccessCode.numberSplice("#"));
     Assert.assertEquals(-1, AccessCode.numberSplice("##"));
     Assert.assertEquals(-1, AccessCode.numberSplice("#7##"));
