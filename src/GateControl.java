@@ -10,6 +10,7 @@ import duckutil.ConfigJson;
 import java.util.TreeMap;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONArray;
+import java.util.logging.Logger;
 
 
 public class GateControl
@@ -19,6 +20,7 @@ public class GateControl
     new GateControl(new ConfigJson(args[0]));
 
   }
+  private static final Logger logger = Logger.getLogger("duck.gate");
 
   private final ConfigJson config;
   private final RelayControl relay_control;
@@ -61,7 +63,7 @@ public class GateControl
 
     rpc_server = new RpcServer(config, relay_control);
 
-    System.out.println("Gate Control Started");
+    logger.info("Gate Control Started");
 
 
   }

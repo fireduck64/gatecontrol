@@ -7,6 +7,8 @@ import duckutil.gatecontrol.gpio.GPIO;
 import java.util.TreeMap;
 import java.util.Map;
 import java.util.TreeSet;
+import java.util.logging.Logger;
+
 
 /**
  * Allows multiple things to activate the relay.
@@ -14,6 +16,7 @@ import java.util.TreeSet;
  */
 public class RelayControl extends PeriodicThread
 {
+  private static final Logger logger = Logger.getLogger("duck.gate.relay");
   private GPIOPin pin;
 
   // Maps identifier to expiration time
@@ -43,7 +46,7 @@ public class RelayControl extends PeriodicThread
    */
   public boolean connectRelay(String identifier, long ms)
   {
-    System.out.println("Connect relay: " + identifier + " for " + ms);
+    logger.info("Connect relay: " + identifier + " for " + ms);
     long expire = System.currentTimeMillis() + ms;
     boolean existing = false;
     synchronized(holds)
@@ -112,7 +115,7 @@ public class RelayControl extends PeriodicThread
       {
         pin.setHigh();
         pin_active=true;
-        System.out.println("Activating relay");
+        logger.info("Activating relay");
       }
     }
     else
@@ -121,7 +124,7 @@ public class RelayControl extends PeriodicThread
       {
         pin.setLow();
         pin_active=false;
-        System.out.println("Deactivating relay");
+        logger.info("Deactivating relay");
       }
     }
 
