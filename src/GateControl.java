@@ -6,17 +6,21 @@ import duckutil.gatecontrol.matrix.MatrixScan;
 import duckutil.gatecontrol.matrix.Keypad;
 import duckutil.gatecontrol.blue.BluetoothScanner;
 import duckutil.Config;
-import duckutil.ConfigFile;
+import duckutil.ConfigJson;
+import java.util.TreeMap;
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONArray;
+
 
 public class GateControl
 {
   public static void main(String args[]) throws Exception
   {
-    new GateControl(new ConfigFile(args[0]));
+    new GateControl(new ConfigJson(args[0]));
 
   }
 
-  private final Config config;
+  private final ConfigJson config;
   private final RelayControl relay_control;
   private final Keypad keypad;
   private final AccessCode access_code;
@@ -25,7 +29,7 @@ public class GateControl
   private final BluetoothScanner blue_scanner;
   private final Notification note;
 
-  public GateControl(Config config)
+  public GateControl(ConfigJson config)
     throws Exception
   {
     this.config = config;
@@ -47,7 +51,7 @@ public class GateControl
     keypad = new Keypad(sound_player);
     keypad.start();
 
-    access_code = new AccessCode(keypad, relay_control, config.getList("access_code_list"), sound_player, note);
+    access_code = new AccessCode(keypad, relay_control, getAccessCodeMap(config), sound_player, note);
     access_code.start();
 
     blue_scanner = new BluetoothScanner(config, relay_control, sound_player, note);
@@ -59,6 +63,30 @@ public class GateControl
 
     System.out.println("Gate Control Started");
 
+
+  }
+
+  public TreeMap<String, String> getAccessCodeMap(ConfigJson config)
+  {
+    JSONArray arr = config.getAsArray("access_code_list");
+
+    TreeMap<String, String> map = new TreeMap<>();
+
+    for(Object o : arr)
+    {
+      JSONObject jo = (JSONObject) o;
+
+      String code = (String) jo.get("code");
+      String label = code;
+
+      if (jo.containsKey("label"))
+      {
+        label = (String) jo.get("label");
+      }
+      map.put(code, label);
+
+    }
+    return map;
 
   }
 

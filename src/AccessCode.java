@@ -17,7 +17,7 @@ public class AccessCode extends PeriodicThread
 {
   private final Keypad keypad;
   private final RelayControl relay_control;
-  private final TreeSet<String> access_code_set;
+  private final TreeMap<String, String> access_code_set;
   private final SoundPlayer sound_player;
   private final Notification note;
 
@@ -28,7 +28,7 @@ public class AccessCode extends PeriodicThread
 
   private String last_code;
 
-  public AccessCode(Keypad keypad, RelayControl relay_control, Collection<String> access_code_list, SoundPlayer sound_player, Notification note)
+  public AccessCode(Keypad keypad, RelayControl relay_control, TreeMap<String, String> access_code_list, SoundPlayer sound_player, Notification note)
   {
     super(1);
     this.keypad = keypad;
@@ -36,8 +36,8 @@ public class AccessCode extends PeriodicThread
     this.sound_player = sound_player;
     this.note = note;
 
-    this.access_code_set = new TreeSet<>();
-    access_code_set.addAll(access_code_list);
+    this.access_code_set = new TreeMap<>();
+    access_code_set.putAll(access_code_list);
 
     recent_presses = new TreeMap<>();
   }
@@ -75,14 +75,15 @@ public class AccessCode extends PeriodicThread
       }
       String entered_string = sb.toString();
       logger.info("Entered string: " + entered_string);
-      for(String code : access_code_set)
+      for(String code : access_code_set.keySet())
       {
         if (entered_string.endsWith(code))
         {
           last_code = code;
-          relay_control.connectRelay("access_code_" + code, 60000L * 5L);
+          String label = access_code_set.get(code);
+          relay_control.connectRelay("access_code_" + label, 60000L * 5L);
           sound_player.playSuccess();
-          note.sendNotification("open code " + code);
+          note.sendNotification("open code " + label);
         }
       }
       if (entered_string.endsWith("#"))

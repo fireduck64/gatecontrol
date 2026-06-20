@@ -1,7 +1,7 @@
 package duckutil.gatecontrol;
 
 import duckutil.Config;
-import duckutil.ConfigFile;
+import duckutil.ConfigJson;
 import duckutil.TimeUtil;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -22,7 +22,7 @@ public class GateCli
       args_list.add(args[i]);
     }
 
-    new GateCli(new ConfigFile(args[0]), args_list);
+    new GateCli(new ConfigJson(args[0]), args_list);
 
   }
   public GateCli(Config config, ArrayList<String> args)
@@ -32,8 +32,10 @@ public class GateCli
     config.require("rpc_username");
     config.require("rpc_password");
 
-    JsonRpcClient client = new JsonRpcClient(config.get("gate_uri"), config.get("rpc_username"), config.get("rpc_password"));
-
+    JsonRpcClient client = new JsonRpcClient(
+      config.get("gate_uri"), 
+      config.get("rpc_username"), 
+      config.get("rpc_password"));
 
     if (args.size() == 0)
     {
@@ -62,8 +64,6 @@ public class GateCli
 
         System.out.println("Hold - " + id + " - " + dur);
 
-
-
       }
       System.out.println("Effective: " + TimeUtil.durationToString(high));
     }
@@ -87,7 +87,6 @@ public class GateCli
       System.out.println("Keeping open for: " + TimeUtil.durationToString(total));
 
       System.out.println(client.request(cmd, o));
-
 
     }
 
