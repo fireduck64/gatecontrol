@@ -9,7 +9,7 @@ import java.util.TreeSet;
 import java.util.TreeMap;
 import duckutil.gatecontrol.RelayControl;
 import duckutil.gatecontrol.SoundPlayer;
-import duckutil.gatecontrol.Notification;;
+import duckutil.gatecontrol.Notification;
 import java.util.logging.Logger;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONArray;

@@ -8,7 +8,7 @@ git_repository = use_repo_rule("@bazel_tools//tools/build_defs/repo:git.bzl", "g
 git_repository(
   name = "duckutil",
   remote = "https://github.com/fireduck64/duckutil",
-  commit = "b721d945278dc2069bb9f5c1556161b37d6b4ee8",
+  commit = "cae7e8abb4939497dfa4f509c2b896a5fc290010",
   shallow_since = "1648055343 -0700"
 )
 
